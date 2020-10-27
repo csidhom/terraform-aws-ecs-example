@@ -14,6 +14,33 @@ data "aws_ami" "amazon_linux_ecs" {
   }
 }
 
+# Create ECS security Group
+resource "aws_security_group" "ecs_sg" {
+    vpc_id      = aws_vpc.vpc.id
+
+    ingress {
+        from_port       = 22
+        to_port         = 22
+        protocol        = "tcp"
+        cidr_blocks     = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        from_port       = 443
+        to_port         = 443
+        protocol        = "tcp"
+        cidr_blocks     = ["0.0.0.0/0"]
+    }
+
+    egress {
+        from_port       = 0
+        to_port         = 65535
+        protocol        = "tcp"
+        cidr_blocks     = ["0.0.0.0/0"]
+    }
+}
+
+# Create launch configuration and ASG to scale EC2 instances in the private subnet
 resource "aws_launch_configuration" "ecs_launch_config" {
     image_id             = data.aws_ami.amazon_linux_ecs.id
     iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
@@ -22,10 +49,9 @@ resource "aws_launch_configuration" "ecs_launch_config" {
     instance_type        = var.instance_type
 }
 
-# ASG to scale EC2 instancesin the private subnet
 resource "aws_autoscaling_group" "ecs_asg" {
     name                      = "${var.prefix_name}-asg"
-    vpc_zone_identifier       = [aws_subnet.pub_subnet.id]
+    vpc_zone_identifier       = module.vpc.private_subnets
     launch_configuration      = aws_launch_configuration.ecs_launch_config.name
 
     desired_capacity          = 2
