@@ -1,4 +1,4 @@
-# Get the latest ECS-optimized image with pre-installed Docker
+/* Get the latest ECS-optimized image with pre-installed Docker */
 data "aws_ami" "amazon_linux_ecs" {
   most_recent = true
   owners      = ["amazon"]
@@ -14,7 +14,7 @@ data "aws_ami" "amazon_linux_ecs" {
   }
 }
 
-# Create ECS security Group
+/* Create ECS security Group */
 resource "aws_security_group" "ecs_sg" {
     vpc_id      = aws_vpc.vpc.id
 
@@ -40,10 +40,10 @@ resource "aws_security_group" "ecs_sg" {
     }
 }
 
-# Create launch configuration and ASG to scale EC2 instances in the private subnet
+/* Create launch configuration and ASG to scale EC2 instances in the private subnet */
 resource "aws_launch_configuration" "ecs_launch_config" {
     image_id             = data.aws_ami.amazon_linux_ecs.id
-    iam_instance_profile = aws_iam_instance_profile.ecs_agent.name
+    iam_instance_profile = aws_iam_instance_profile.ecs.id
     security_groups      = [aws_security_group.ecs_sg.id]
     user_data            = "#!/bin/bash\necho ECS_CLUSTER=my-cluster >> /etc/ecs/ecs.config"
     instance_type        = var.instance_type
