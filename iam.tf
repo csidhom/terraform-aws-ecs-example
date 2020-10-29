@@ -22,8 +22,8 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_role_policy" {
  * IAM profile to be used in ASG.
  */
 resource "aws_iam_instance_profile" "ecs" {
-  name = "ecs-instance-profile"
-  path = "/"
+  name  = "ecs-instance-profile"
+  path  = "/"
   roles = ["${aws_iam_role.ecs_role.name}"]
 }
 

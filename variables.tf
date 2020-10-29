@@ -3,11 +3,11 @@ variable "prefix_name" {
 }
 variable "environment" {
   description = "AWS tag to indicate environment name of each infrastructure object."
-  default = "dev"
+  default     = "dev"
 }
 variable "instance_type" {
   description = "EC2 instance type"
-  default = "t2.small"
+  default     = "t2.small"
 }
 variable "region" {
   description = "AWS region"
@@ -15,5 +15,5 @@ variable "region" {
 }
 variable "s3_bucket_name" {
   description = "The name of the private s3 bucket"
-  default = "s3-forthline"
+  default     = "s3-forthline"
 }
