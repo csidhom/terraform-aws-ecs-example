@@ -16,7 +16,7 @@ data "aws_ami" "amazon_linux_ecs" {
 
 /* Create ECS security Group */
 resource "aws_security_group" "ecs_sg" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = module.vpc.vpc_id
 
   ingress {
     from_port   = 22
