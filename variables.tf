@@ -1,17 +1,19 @@
 variable "prefix_name" {
-  type        = string
   description = "Prefix to be used on each AWS infrastructure object"
 }
-
 variable "environment" {
-  type        = string
   description = "AWS tag to indicate environment name of each infrastructure object."
+  default = "dev"
 }
 variable "instance_type" {
+  description = "EC2 instance type"
   default = "t2.small"
-  type    = string
 }
 variable "region" {
   description = "AWS region"
   default     = "eu-west-1"
+}
+variable "s3_bucket_name" {
+  description = "The name of the private s3 bucket"
+  default = "s3-forthline"
 }
