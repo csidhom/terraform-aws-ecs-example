@@ -1,7 +1,7 @@
 /* ecs iam role and policies */
 resource "aws_iam_role" "ecs_role" {
   name               = "ecs_role"
-  assume_role_policy = "${file("policies/ecs-role.json")}"
+  assume_role_policy = file("policies/ecs-role.json")
 }
 
 /**
@@ -10,7 +10,7 @@ resource "aws_iam_role" "ecs_role" {
 * in the managed AmazonEC2ContainerServiceforEC2Role policy
 */
 resource "aws_iam_role_policy_attachment" "ecs_instance_role_policy" {
-  role       = "${aws_iam_role.ecs_role.id}"
+  role       = aws_iam_role.ecs_role.id
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
