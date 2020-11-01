@@ -1,4 +1,4 @@
-/* Get the latest ECS-optimized image with pre-installed Docker */
+# Get the latest ECS-optimized image with pre-installed Docker
 data "aws_ami" "amazon_linux_ecs" {
   most_recent = true
   owners      = ["amazon"]
@@ -14,10 +14,20 @@ data "aws_ami" "amazon_linux_ecs" {
   }
 }
 
-/* Create ECS security Group for outbound internet access  */
+
+# Create ECS security Group
+# Allows ALB to ECS only and outbound internet access
 resource "aws_security_group" "instance_sg" {
-  name   = "${var.prefix_name}-instance-sg"
-  vpc_id = module.vpc.vpc_id
+  name        = "${var.prefix_name}-instance-sg"
+  description = "Allow inbound access from the ALB only"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port       = "8080"
+    to_port         = "8080"
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+  }
 
   egress {
     from_port   = 0
@@ -27,10 +37,8 @@ resource "aws_security_group" "instance_sg" {
   }
 }
 
-/* 
- * Create launch configuration and ASG to scale EC2 instances in the private subnet 
- * The parameter `target_group_arns` is used to attach the ASG to an ALB
-*/
+# Create launch configuration and ASG to scale EC2 instances in the private subnet 
+# The parameter `target_group_arns` is used to attach the ASG to an ALB
 resource "aws_launch_configuration" "ecs_launch_config" {
   image_id             = data.aws_ami.amazon_linux_ecs.id
   iam_instance_profile = aws_iam_instance_profile.ecs.id

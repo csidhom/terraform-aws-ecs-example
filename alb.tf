@@ -1,32 +1,25 @@
-/*
-* Define the ALB Security Group
-* Allow inbound traffic on port 80 from anywhere
-* Allow outbound traffic on all ports
-*/
+# Security Group Internet to ALB on port 80
 resource "aws_security_group" "alb_sg" {
-  name   = "${var.prefix_name}-alb-sg"
-  vpc_id = module.vpc.vpc_id
+  name        = "${var.prefix_name}-alb-sg"
+  vpc_id      = module.vpc.vpc_id
+  description = "Allow access on port 80 only to ALB"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
-resource "aws_security_group_rule" "inbound_access" {
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.alb_sg.id
-}
-
-resource "aws_security_group_rule" "outbound_internet_access" {
-  type              = "egress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.alb_sg.id
-}
-
-/* Create an Application Load Balancer in the public subnet */
+# Create an Application Load Balancer in the public subnet 
 resource "aws_alb" "ecs-load-balancer" {
   name            = "ecs-load-balancer"
   security_groups = ["${aws_security_group.alb_sg.id}"]
@@ -40,7 +33,7 @@ resource "aws_alb" "ecs-load-balancer" {
 
 resource "aws_alb_target_group" "ecs-target-group" {
   name     = "ecs-target-group"
-  port     = "80"
+  port     = "8080"
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id
 

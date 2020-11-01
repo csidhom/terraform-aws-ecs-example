@@ -1,9 +1,9 @@
-/* Get all available AZs in our region */
+# Get all available AZs in our region 
 data "aws_availability_zones" "available_azs" {
   state = "available"
 }
 
-/* Create VPC using the official AWS module */
+# Create VPC using the official AWS module
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.44.0"
