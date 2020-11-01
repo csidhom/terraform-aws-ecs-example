@@ -43,7 +43,9 @@ Terraform modules used
 	 After approving the plan, terraform will spin up the infrastructure.
 	  
  3. Access the App
+
 	Once the apply command finishes successfully, the Load Balancer DNS is printed as an output. Example
+
         ```
         Outputs:
         alb_dns_name = ecs-load-balancer-1761861875.eu-west-1.elb.amazonaws.com
