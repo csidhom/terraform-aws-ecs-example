@@ -3,9 +3,17 @@
 
 ## Introduction
 
-This solution is divided into three main terraform modules:
+This repo contains the Terraform plan to deploy an ECS cluster on EC2 running two parallel nginx tasks.
+It is an attempt to complete the three layers of the assignment. It includes the following AWS resources:
 
-The application is an Nginx app, which simply uses the nginx docker image.
+- VPC with single nat gateway, two public subnets and two private subnets across two distinct AZs
+- ECS service running one service with two parallel nginx tasks exposed on port 8080
+- Private S3 Bucket accessible from the nginx tasks
+- Application Load Balancer that forwards requests from port 80 to the nginx tasks
+- Auto Scaling Group and Launch Configuration for the ECS instances
+- IAM roles for ECS container instance, for ALB and for accessing S3 from the EC2  
+- Security Groups to only allow traffic to the ECS instances from the ALB on port 8080
+
  
 Terraform modules used
  
@@ -18,7 +26,7 @@ Terraform modules used
 
  1. Clone or Download the project source
 
-    To clone the project, request access to the private repo from "chaker.sidhom@gmail.com"
+    To clone the project, request access from "chaker.sidhom@gmail.com"
 	 
 	``` bash
 	git clone https://github.com/csidhom/fourthline.git
