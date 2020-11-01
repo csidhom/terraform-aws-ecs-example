@@ -4,7 +4,7 @@
 ## Introduction
 
 This repo contains the Terraform plan to deploy an ECS cluster on EC2 running two parallel nginx tasks.
-It is an attempt to complete the three layers of the assignment. It includes the following AWS resources:
+It is an attempt to complete the three layers of the assignmentn and will provision the following AWS resources:
 
 - **VPC** with single nat gateway, two public subnets and two private subnets across two distinct AZs
 - **ECS** service running one service with two parallel nginx tasks exposed on port 8080
@@ -46,9 +46,9 @@ Terraform modules used
 
 	Once the apply command finishes successfully, the Load Balancer DNS is printed as an output. Example
 
-        ```
-        Outputs:
-        alb_dns_name = ecs-load-balancer-1761861875.eu-west-1.elb.amazonaws.com
+        ``` bash
+            Outputs:
+            alb_dns_name = ecs-load-balancer-1761861875.eu-west-1.elb.amazonaws.com
         ```
 
  5. Clean up the infrastructure 
