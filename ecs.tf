@@ -3,6 +3,7 @@
 # Containers expose nginx port 80 to the host port 8080
 resource "aws_ecs_task_definition" "nginx_app" {
   family                = "ecs-alb-nginx"
+  task_role_arn = aws_iam_role.ecs_task_role.arn
   container_definitions = <<EOF
 [
   {
