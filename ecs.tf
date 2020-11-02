@@ -3,12 +3,13 @@
 # Containers expose nginx port 80 to the host port 8080
 resource "aws_ecs_task_definition" "nginx_app" {
   family                = "ecs-alb-nginx"
+  # IAM role allowing tasks to write to S3
   task_role_arn = aws_iam_role.ecs_task_role.arn
   container_definitions = <<EOF
 [
   {
     "name": "nginx",
-    "image": "nginx:1.13-alpine",
+    "image": "nginx:alpine",
     "essential": true,
     "portMappings": [
       {

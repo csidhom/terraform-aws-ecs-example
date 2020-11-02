@@ -31,6 +31,7 @@ resource "aws_alb" "ecs-load-balancer" {
   }
 }
 
+# ALB Target Group uses port 8080 which is the host port exposed by nginx tasks 
 resource "aws_alb_target_group" "ecs-target-group" {
   name     = "ecs-target-group"
   port     = "8080"
@@ -53,6 +54,7 @@ resource "aws_alb_target_group" "ecs-target-group" {
   }
 }
 
+# ALB Listener listens on port 80
 resource "aws_alb_listener" "alb-listener" {
   load_balancer_arn = aws_alb.ecs-load-balancer.arn
   port              = "80"
